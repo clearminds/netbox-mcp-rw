@@ -139,13 +139,13 @@ netbox = None
 
 # Tools removed in read-only mode.
 WRITE_TOOLS: list[str] = [
-    "netbox_set_interface_mac",
-    "netbox_create_object",
-    "netbox_update_object",
-    "netbox_delete_object",
-    "netbox_bulk_create_objects",
-    "netbox_bulk_update_objects",
-    "netbox_bulk_delete_objects",
+    "set_interface_mac",
+    "create_object",
+    "update_object",
+    "delete_object",
+    "bulk_create_objects",
+    "bulk_update_objects",
+    "bulk_delete_objects",
 ]
 
 def _truthy_env(name: str, default: str = "false") -> bool:
@@ -287,7 +287,7 @@ def _auto_detect_scheme(netbox_url: str) -> str:
 
 
 @mcp.tool()
-def netbox_set_interface_mac(interface_id: int, mac_address: str):
+def set_interface_mac(interface_id: int, mac_address: str):
     """
     Set the MAC address for an interface in a NetBox-version-aware way (safe-by-default).
 
@@ -340,7 +340,7 @@ def netbox_set_interface_mac(interface_id: int, mac_address: str):
 
 
 @mcp.tool()
-def netbox_get_objects(object_type: str, filters: dict):
+def get_objects(object_type: str, filters: dict):
     """
     Get objects from NetBox based on their type and filters
     Args:
@@ -448,7 +448,7 @@ def netbox_get_objects(object_type: str, filters: dict):
     return _maybe_wrap_results(results)
 
 @mcp.tool()
-def netbox_get_object_by_id(object_type: str, object_id: int):
+def get_object_by_id(object_type: str, object_id: int):
     """
     Get detailed information about a specific NetBox object by its ID.
     
@@ -470,7 +470,7 @@ def netbox_get_object_by_id(object_type: str, object_id: int):
     return netbox.get(endpoint)
 
 @mcp.tool()
-def netbox_get_changelogs(filters: dict):
+def get_changelogs(filters: dict):
     """
     Get object change records (changelogs) from NetBox based on filters.
     
@@ -520,7 +520,7 @@ def netbox_get_changelogs(filters: dict):
     return _maybe_wrap_results(results)
 
 @mcp.tool()
-def netbox_create_object(object_type: str, data: dict):
+def create_object(object_type: str, data: dict):
     """
     Create a new object in NetBox.
     
@@ -533,14 +533,14 @@ def netbox_create_object(object_type: str, data: dict):
         
     Example:
     To create a new site:
-    netbox_create_object("sites", {
+    create_object("sites", {
         "name": "New Site",
         "slug": "new-site", 
         "status": "active"
     })
     
     To create a new device:
-    netbox_create_object("devices", {
+    create_object("devices", {
         "name": "new-device",
         "device_type": 1,  # ID of device type
         "site": 1,         # ID of site
@@ -560,7 +560,7 @@ def netbox_create_object(object_type: str, data: dict):
     return netbox.create(endpoint, data)
 
 @mcp.tool()
-def netbox_update_object(object_type: str, object_id: int, data: dict):
+def update_object(object_type: str, object_id: int, data: dict):
     """
     Update an existing object in NetBox.
     
@@ -574,10 +574,10 @@ def netbox_update_object(object_type: str, object_id: int, data: dict):
         
     Example:
     To update a site's description:
-    netbox_update_object("sites", 1, {"description": "Updated description"})
+    update_object("sites", 1, {"description": "Updated description"})
     
     To change a device's status:
-    netbox_update_object("devices", 5, {"status": "offline"})
+    update_object("devices", 5, {"status": "offline"})
     """
     # Validate object_type exists in mapping
     if object_type not in NETBOX_OBJECT_TYPES:
@@ -591,7 +591,7 @@ def netbox_update_object(object_type: str, object_id: int, data: dict):
     return netbox.update(endpoint, object_id, data)
 
 @mcp.tool()
-def netbox_delete_object(object_type: str, object_id: int):
+def delete_object(object_type: str, object_id: int):
     """
     Delete an object from NetBox.
     
@@ -606,10 +606,10 @@ def netbox_delete_object(object_type: str, object_id: int):
     
     Example:
     To delete a device:
-    netbox_delete_object("devices", 5)
+    delete_object("devices", 5)
     
     To delete an IP address:
-    netbox_delete_object("ip-addresses", 123)
+    delete_object("ip-addresses", 123)
     """
     # Validate object_type exists in mapping
     if object_type not in NETBOX_OBJECT_TYPES:
@@ -628,7 +628,7 @@ def netbox_delete_object(object_type: str, object_id: int):
         return {"success": False, "message": f"Failed to delete {object_type} with ID {object_id}"}
 
 @mcp.tool()
-def netbox_bulk_create_objects(object_type: str, data: list):
+def bulk_create_objects(object_type: str, data: list):
     """
     Create multiple objects in NetBox in a single request.
     
@@ -641,7 +641,7 @@ def netbox_bulk_create_objects(object_type: str, data: list):
         
     Example:
     To create multiple sites:
-    netbox_bulk_create_objects("sites", [
+    bulk_create_objects("sites", [
         {"name": "Site A", "slug": "site-a", "status": "active"},
         {"name": "Site B", "slug": "site-b", "status": "active"}
     ])
@@ -659,7 +659,7 @@ def netbox_bulk_create_objects(object_type: str, data: list):
     return _maybe_wrap_results(results)
 
 @mcp.tool()
-def netbox_bulk_update_objects(object_type: str, data: list):
+def bulk_update_objects(object_type: str, data: list):
     """
     Update multiple objects in NetBox in a single request.
     
@@ -672,7 +672,7 @@ def netbox_bulk_update_objects(object_type: str, data: list):
         
     Example:
     To update multiple devices:
-    netbox_bulk_update_objects("devices", [
+    bulk_update_objects("devices", [
         {"id": 1, "status": "offline"},
         {"id": 2, "status": "maintenance"}
     ])
@@ -690,7 +690,7 @@ def netbox_bulk_update_objects(object_type: str, data: list):
     return _maybe_wrap_results(results)
 
 @mcp.tool()
-def netbox_bulk_delete_objects(object_type: str, object_ids: list):
+def bulk_delete_objects(object_type: str, object_ids: list):
     """
     Delete multiple objects from NetBox in a single request.
     
@@ -705,7 +705,7 @@ def netbox_bulk_delete_objects(object_type: str, object_ids: list):
     
     Example:
     To delete multiple devices:
-    netbox_bulk_delete_objects("devices", [5, 6, 7])
+    bulk_delete_objects("devices", [5, 6, 7])
     """
     # Validate object_type exists in mapping
     if object_type not in NETBOX_OBJECT_TYPES:

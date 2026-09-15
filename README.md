@@ -134,17 +134,17 @@ This server works with any MCP-compatible client. Adjust the command and argumen
 ## Available Tools
 
 ### Device Management
-- `netbox_get_objects` - List/filter any object type
-- `netbox_get_object_by_id` - Get specific object details
-- `netbox_create_object` - Create new objects
-- `netbox_update_object` - Update existing objects
-- `netbox_delete_object` - Delete objects
-- `netbox_bulk_create_objects` - Bulk create operations
-- `netbox_bulk_update_objects` - Bulk update operations
-- `netbox_bulk_delete_objects` - Bulk delete operations
+- `get_objects` - List/filter any object type
+- `get_object_by_id` - Get specific object details
+- `create_object` - Create new objects
+- `update_object` - Update existing objects
+- `delete_object` - Delete objects
+- `bulk_create_objects` - Bulk create operations
+- `bulk_update_objects` - Bulk update operations
+- `bulk_delete_objects` - Bulk delete operations
 
 ### Audit & History
-- `netbox_get_changelogs` - Access change history and audit trails
+- `get_changelogs` - Access change history and audit trails
 
 ## Security Features
 
